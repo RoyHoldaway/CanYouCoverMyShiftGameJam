@@ -51,15 +51,31 @@ class ShiftScene extends Phaser.Scene {
     // runs once when the scene starts
     console.log('scene is alive');
 
+    this.player = this.physics.add.sprite(100, 100, 'player');
+    this.playerSpeed = 200; // pixels per second
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+
     //Testing all buttons will print to console when pressed and not conflict with browser shortcuts
     this.bindings = {
+      //Shift keys to flip burgers and pick up fries
       ShiftLeft: () => console.log('Shift left pressed'),
       ShiftRight: () => console.log('Shift right pressed'),
+
+      //Control keys to season fries and add condiments
       ControlLeft: () => console.log('Control left pressed'),
       ControlRight: () => console.log('Control right pressed'),
+
+      //Space to leave the station and go to the next one
       Space: () => console.log('Space key pressed'),
+
+      //Enter to push orders to the next station
       Enter: () => console.log('Enter key pressed'),
+
+      //Numpad Enter key to clean counter top
       NumpadEnter: () => console.log('Numpad enter key pressed'),
+
+      //Caps Lock key to toss salads
       CapsLock: () => console.log('Caps lock key pressed'),
     };
 
@@ -69,14 +85,57 @@ class ShiftScene extends Phaser.Scene {
         binding();
       }
     });
+
+
+    //Controls are now set so I will move onto making something that can be interacted with
+
+    //To start I will make a rectangle that can be moved by the arrow keys this will become the player
+
+    //Then shift, control, enter and caps lock, will be used to interact with objects in the game world.
+
+    //space will be used to "jump" for this stage of testing but then will be used to trigger going into the next station via scenes
+
+    //numpad enter will be used to clean the counter top and will not be tested until later on
+
   }
 
 
   update(time, delta) {
     // runs every frame
+    
+    const player = this.player;
+    const keys = this.input.keyboard.keys;
+    //setting velocity based off arcade physics so that the player can move around the screen with arrow keys
+    player.setVelocity(0);
 
+    //setting controls for the player to move around the screen with arrow keys
+    if (this.cursors.up.isDown) {
+      player.setVelocityY(-this.playerSpeed);
+    }
+    if (this.cursors.down.isDown) {
+      player.setVelocityY(this.playerSpeed);
+    }
+    if (this.cursors.left.isDown) {
+      player.setVelocityX(-this.playerSpeed);
+    }
+    if (this.cursors.right.isDown) {
+      player.setVelocityX(this.playerSpeed);
+    }
+
+    //Normalize player speed to stop diagonal movement from being faster than horizontal or vertical movement. 
+    //This is like stopping 2d bunny hopping in fps games.
+    player.body.velocity.normalize().scale(this.playerSpeed);
   }
 }
+
+
+
+
+
+
+
+
+
 
 const config = {
   type: Phaser.AUTO,
@@ -84,6 +143,14 @@ const config = {
   height: 540,
   parent: 'game',
   backgroundColor: '#2d6a8f',
+
+  physics: {
+    default: 'arcade',
+    arcade: {
+      debug: true,
+    },
+  },
+
   scene: [ShiftScene],
 };
 

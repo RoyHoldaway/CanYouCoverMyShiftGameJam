@@ -52,62 +52,29 @@ class ShiftScene extends Phaser.Scene {
     console.log('scene is alive');
 
     //Testing all buttons will print to console when pressed and not conflict with browser shortcuts
-    //console input for space key
-    this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.bindings = {
+      ShiftLeft: () => console.log('Shift left pressed'),
+      ShiftRight: () => console.log('Shift right pressed'),
+      ControlLeft: () => console.log('Control left pressed'),
+      ControlRight: () => console.log('Control right pressed'),
+      Space: () => console.log('Space key pressed'),
+      Enter: () => console.log('Enter key pressed'),
+      NumpadEnter: () => console.log('Numpad enter key pressed'),
+      CapsLock: () => console.log('Caps lock key pressed'),
+    };
 
-    //console input for Enter key
-    this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-
-
-    //console input for Numpad Enter key
-    this.NumpadEnterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ENTER);
-
-    //console input for Caps Lock key
-    this.CapsLockKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CAPS_LOCK);
-
-
-    //console input for CTRL left and right individually
     this.input.keyboard.on('keydown', (event) => {
-      if (event.code === 'ControlLeft') {
-        console.log('ctrl left pressed');
-      }
-      if (event.code === 'ControlRight') {
-        console.log('ctrl right pressed');
-      }
-    });
-
-
-    //console input for shift left and right individually
-    this.input.keyboard.on('keydown', (event) => {
-      if (event.code === 'ShiftLeft') {
-        console.log('Shift left pressed');
-      }
-      if (event.code === 'ShiftRight') {
-        console.log('Shift right pressed');
+      const binding = this.bindings[event.code];
+      if (binding) {
+        binding();
       }
     });
   }
 
 
-
   update(time, delta) {
     // runs every frame
 
-        if (this.NumpadEnterKey.isDown) {
-      console.log('numpad enter key pressed');
-    }
-
-    if (this.enterKey.isDown) {
-      console.log('enter key pressed');
-    }
-
-    if (this.spaceKey.isDown) {
-      console.log('space key pressed');
-    }
-
-    if (this.CapsLockKey.isDown) {
-      console.log('caps lock key pressed');
-    }
   }
 }
 

@@ -44,14 +44,30 @@ class ShiftScene extends Phaser.Scene {
   }
 
   preload() {
+    this.spritePath = 'assets/sprites/';
+
+    this.load.on('loaderror', (file) => {
+        console.error('ASSET FAILED:', file.key, file.src);
+    });
     // assets get loaded here later (images, sounds)
+    this.load.image('ZoeForward', this.spritePath + 'ZoeForward.png');
+    this.load.image('ZoeForwardRight', this.spritePath + 'ZoeForwardRight.png');
+    this.load.image('ZoeForwardLeft', this.spritePath + 'ZoeForwardLeft.png');
+    this.load.image('ZoeBackward', this.spritePath + 'ZoeBackward.png');
+    this.load.image('ZoeBackLeft', this.spritePath + 'ZoeBackLeft.png');
+    this.load.image('ZoeBackRight', this.spritePath + 'ZoeBackRight.png');
+    this.load.image('ZoeLeft', this.spritePath + 'ZoeLeft.png');
+    this.load.image('ZoeRight', this.spritePath + 'ZoeRight.png');
+    this.load.image('background', this.spritePath + 'background.png');
   }
 
   create() {
     // runs once when the scene starts
     console.log('scene is alive');
-
-    this.player = this.physics.add.sprite(100, 100, 'player');
+    
+    this.background = this.physics.add.sprite(480, 270, 'background');
+    this.player = this.physics.add.sprite(200, 200, 'ZoeForward');
+    this.player.setScale(0.08);
     this.playerSpeed = 200; // pixels per second
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -85,57 +101,73 @@ class ShiftScene extends Phaser.Scene {
         binding();
       }
     });
-
-
-    //Controls are now set so I will move onto making something that can be interacted with
-
-    //To start I will make a rectangle that can be moved by the arrow keys this will become the player
-
-    //Then shift, control, enter and caps lock, will be used to interact with objects in the game world.
-
-    //space will be used to "jump" for this stage of testing but then will be used to trigger going into the next station via scenes
-
-    //numpad enter will be used to clean the counter top and will not be tested until later on
-
   }
 
 
   update(time, delta) {
     // runs every frame
     
+    //Establish constants for the update function to use for player movement
     const player = this.player;
     const keys = this.input.keyboard.keys;
+
     //setting velocity based off arcade physics so that the player can move around the screen with arrow keys
     player.setVelocity(0);
 
     //setting controls for the player to move around the screen with arrow keys
+
+    // up arrow shows player backwards
     if (this.cursors.up.isDown) {
       player.setVelocityY(-this.playerSpeed);
+      this.player.setTexture('ZoeBackward');
     }
+
+    // down arrow shows player forwards
     if (this.cursors.down.isDown) {
       player.setVelocityY(this.playerSpeed);
+      this.player.setTexture('ZoeForward');
     }
+
+    // left and right arrows show player left and right
     if (this.cursors.left.isDown) {
       player.setVelocityX(-this.playerSpeed);
+      this.player.setTexture('ZoeLeft');
     }
     if (this.cursors.right.isDown) {
       player.setVelocityX(this.playerSpeed);
+      this.player.setTexture('ZoeRight');
     }
+
+    
+    //down and left for forward left
+    if (this.cursors.down.isDown && this.cursors.left.isDown) {
+      this.player.setTexture('ZoeForwardLeft');
+    }
+
+    //down right for forward right
+    if (this.cursors.down.isDown && this.cursors.right.isDown) {
+      this.player.setTexture('ZoeForwardRight');
+    }
+
+    //up and left for forward left
+    if (this.cursors.up.isDown && this.cursors.left.isDown) {
+      this.player.setTexture('ZoeBackLeft');
+    }
+
+    //up and right for forward right
+    if (this.cursors.up.isDown && this.cursors.right.isDown) {
+      this.player.setTexture('ZoeBackRight');
+    }
+
+
+
+
 
     //Normalize player speed to stop diagonal movement from being faster than horizontal or vertical movement. 
     //This is like stopping 2d bunny hopping in fps games.
     player.body.velocity.normalize().scale(this.playerSpeed);
   }
 }
-
-
-
-
-
-
-
-
-
 
 const config = {
   type: Phaser.AUTO,
@@ -154,7 +186,4 @@ const config = {
   scene: [ShiftScene],
 };
 
-
-
 new Phaser.Game(config);
-

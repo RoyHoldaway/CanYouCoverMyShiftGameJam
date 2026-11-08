@@ -38,9 +38,9 @@
 //
 
 
-class ShiftScene extends Phaser.Scene {
+class KitchenScene extends Phaser.Scene {
   constructor() {
-    super('ShiftScene');
+    super('KitchenScene');
   }
 
   preload() {
@@ -65,15 +65,19 @@ class ShiftScene extends Phaser.Scene {
     // runs once when the scene starts
     console.log('scene is alive');
     
-    this.background = this.physics.add.sprite(480, 270, 'background');
-    this.player = this.physics.add.sprite(200, 200, 'ZoeForward');
-    this.player.setScale(0.08);
-    this.playerSpeed = 200; // pixels per second
+    this.background = this.physics.add.image(960, 540, 'background');
+    this.player = this.physics.add.sprite(1300, 300, 'ZoeForward');
+    this.player.setScale(0.15);
+    this.playerSpeed = 325; // pixels per second
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //Testing all buttons will print to console when pressed and not conflict with browser shortcuts
     this.bindings = {
+
+      //Space to leave the station and go to the next one
+      Space: () => console.log('Space key pressed'),
+
       //Shift keys to flip burgers and pick up fries
       ShiftLeft: () => console.log('Shift left pressed'),
       ShiftRight: () => console.log('Shift right pressed'),
@@ -82,8 +86,6 @@ class ShiftScene extends Phaser.Scene {
       ControlLeft: () => console.log('Control left pressed'),
       ControlRight: () => console.log('Control right pressed'),
 
-      //Space to leave the station and go to the next one
-      Space: () => console.log('Space key pressed'),
 
       //Enter to push orders to the next station
       Enter: () => console.log('Enter key pressed'),
@@ -171,8 +173,8 @@ class ShiftScene extends Phaser.Scene {
 
 const config = {
   type: Phaser.AUTO,
-  width: 960,
-  height: 540,
+  width: 1920,
+  height: 1080,
   parent: 'game',
   backgroundColor: '#2d6a8f',
 
@@ -183,7 +185,7 @@ const config = {
     },
   },
 
-  scene: [ShiftScene],
+  scene: [KitchenScene],
 };
 
 new Phaser.Game(config);

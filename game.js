@@ -171,6 +171,122 @@ class KitchenScene extends Phaser.Scene {
   }
 }
 
+
+
+class FryerScene extends Phaser.Scene {
+  constructor() {
+    super('FryerScene');
+  }
+
+  preload() {
+    this.spritePath = 'assets/sprites/';
+
+    this.load.on('loaderror', (file) => {
+        console.error('ASSET FAILED:', file.key, file.src);
+    });
+
+
+
+    this.load.image('FryerBackground', this.spritePath + 'FryerBackground.png');
+  }
+
+  create() {
+    // runs once when the scene starts
+    console.log('scene is alive');
+    
+    this.background = this.physics.add.image(960, 540, 'FryerBackground');
+    this.cursors = this.input.keyboard.createCursorKeys();
+
+    //Testing all buttons will print to console when pressed and not conflict with browser shortcuts
+    this.bindings = {
+
+      //Space to leave the station and go to the next one
+      Space: () => console.log('Space key pressed'),
+
+      //Shift keys to flip burgers and pick up fries
+      ShiftLeft: () => console.log('Shift left pressed'),
+      ShiftRight: () => console.log('Shift right pressed'),
+    };
+
+    this.input.keyboard.on('keydown', (event) => {
+      const binding = this.bindings[event.code];
+      if (binding) {
+        binding();
+      }
+    });
+  }
+
+
+  update(time, delta) {
+    // runs every frame
+    
+    //Establish constants for the update function to use for player movement
+    const player = this.player;
+    const keys = this.input.keyboard.keys;
+
+    //setting velocity based off arcade physics so that the player can move around the screen with arrow keys
+    player.setVelocity(0);
+
+    //setting controls for the player to move around the screen with arrow keys
+
+    // up arrow shows player backwards
+    if (this.cursors.up.isDown) {
+      player.setVelocityY(-this.playerSpeed);
+      this.player.setTexture('ZoeBackward');
+    }
+
+    // down arrow shows player forwards
+    if (this.cursors.down.isDown) {
+      player.setVelocityY(this.playerSpeed);
+      this.player.setTexture('ZoeForward');
+    }
+
+    // left and right arrows show player left and right
+    if (this.cursors.left.isDown) {
+      player.setVelocityX(-this.playerSpeed);
+      this.player.setTexture('ZoeLeft');
+    }
+    if (this.cursors.right.isDown) {
+      player.setVelocityX(this.playerSpeed);
+      this.player.setTexture('ZoeRight');
+    }
+
+    
+    //down and left for forward left
+    if (this.cursors.down.isDown && this.cursors.left.isDown) {
+      this.player.setTexture('ZoeForwardLeft');
+    }
+
+    //down right for forward right
+    if (this.cursors.down.isDown && this.cursors.right.isDown) {
+      this.player.setTexture('ZoeForwardRight');
+    }
+
+    //up and left for forward left
+    if (this.cursors.up.isDown && this.cursors.left.isDown) {
+      this.player.setTexture('ZoeBackLeft');
+    }
+
+    //up and right for forward right
+    if (this.cursors.up.isDown && this.cursors.right.isDown) {
+      this.player.setTexture('ZoeBackRight');
+    }
+
+
+
+
+
+    //Normalize player speed to stop diagonal movement from being faster than horizontal or vertical movement. 
+    //This is like stopping 2d bunny hopping in fps games.
+    player.body.velocity.normalize().scale(this.playerSpeed);
+  }
+
+
+
+}
+
+
+
 const config = {
   type: Phaser.AUTO,
   width: 1920,

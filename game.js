@@ -1,64 +1,25 @@
-//were making a game for a gamejam using phaser in js.
-//its kind of like papas pizzaria and all those games
-//
-// Idea I wrote up
-//
-//Title
-//Can you cover my shift?
-
-//Plot:
-//get called into work because someone needs you to cover their shift
-
-//You get there and someone asks if you can take their closing shift too.
-//so now youre going to be there all day.
-//(Sets the reason why youre stuck here essentially forever in the game loop)
-
-//First level is learning controls
-//Arrow keys over to highlighted grill, select burger with mouse, flip burger with shift key
-//arrow keys over to highlighted fryer, left shift to drop fries right shift to pick them up
-
-//after a few different tasks the boss calls, his voice is fast paced 
-//and high pitched. On the call he says 
-//"Hey the IT guy should be there any minute"
-//You say okay, and Boss speaks again 
-//"He said when he gets there heres gonna take all the control keys, the caps lock key,  
-//and the enter keys off of the keyboards"
-//His voice gets slow paced and drops to a deep scary tone screen turns red
-//"and hes gonna replace them with shifts"
-
-//Now enter and control are also controls
-//You now need to flip burgers, season fries, add condiments, toss salads, 
-
-//If you dont clean the counter top the plate or food can slip off the table
-
-//Coworker texts or the boss calls with increasingly unreasonable asks (“can you also do the drive-thru?” and 
-//"I signed the kitchen up for delivery apps, youll need to make those to go orders too").
-
-//Art style will be 2D minimalist vector cartoon style like scribblenauts
-//
-
-
 class KitchenScene extends Phaser.Scene {
   constructor() {
     super('KitchenScene');
   }
 
   preload() {
-    this.spritePath = 'assets/sprites/';
+    this.ZoeSpritePath = 'assets/sprites/ZoeSprites/';
+    this.BackgroundSpritePath = 'assets/sprites/backgrounds/';
 
     this.load.on('loaderror', (file) => {
         console.error('ASSET FAILED:', file.key, file.src);
     });
     // assets get loaded here later (images, sounds)
-    this.load.image('ZoeForward', this.spritePath + 'ZoeForward.png');
-    this.load.image('ZoeForwardRight', this.spritePath + 'ZoeForwardRight.png');
-    this.load.image('ZoeForwardLeft', this.spritePath + 'ZoeForwardLeft.png');
-    this.load.image('ZoeBackward', this.spritePath + 'ZoeBackward.png');
-    this.load.image('ZoeBackLeft', this.spritePath + 'ZoeBackLeft.png');
-    this.load.image('ZoeBackRight', this.spritePath + 'ZoeBackRight.png');
-    this.load.image('ZoeLeft', this.spritePath + 'ZoeLeft.png');
-    this.load.image('ZoeRight', this.spritePath + 'ZoeRight.png');
-    this.load.image('background', this.spritePath + 'background.png');
+    this.load.image('ZoeForward', this.ZoeSpritePath + 'ZoeForward.png');
+    this.load.image('ZoeForwardRight', this.ZoeSpritePath + 'ZoeForwardRight.png');
+    this.load.image('ZoeForwardLeft', this.ZoeSpritePath + 'ZoeForwardLeft.png');
+    this.load.image('ZoeBackward', this.ZoeSpritePath + 'ZoeBackward.png');
+    this.load.image('ZoeBackLeft', this.ZoeSpritePath + 'ZoeBackLeft.png');
+    this.load.image('ZoeBackRight', this.ZoeSpritePath + 'ZoeBackRight.png');
+    this.load.image('ZoeLeft', this.ZoeSpritePath + 'ZoeLeft.png');
+    this.load.image('ZoeRight', this.ZoeSpritePath + 'ZoeRight.png');
+    this.load.image('background', this.BackgroundSpritePath + 'background.png');
   }
 
   create() {
@@ -76,25 +37,14 @@ class KitchenScene extends Phaser.Scene {
     this.bindings = {
 
       //Space to leave the station and go to the next one
-      Space: () => console.log('Space key pressed'),
-
-      //Shift keys to flip burgers and pick up fries
-      ShiftLeft: () => console.log('Shift left pressed'),
-      ShiftRight: () => console.log('Shift right pressed'),
-
-      //Control keys to season fries and add condiments
-      ControlLeft: () => console.log('Control left pressed'),
-      ControlRight: () => console.log('Control right pressed'),
+      Space: () => console.log('Enter Scene'),
 
 
-      //Enter to push orders to the next station
-      Enter: () => console.log('Enter key pressed'),
-
-      //Numpad Enter key to clean counter top
-      NumpadEnter: () => console.log('Numpad enter key pressed'),
-
-      //Caps Lock key to toss salads
-      CapsLock: () => console.log('Caps lock key pressed'),
+      //cut out all other controls as they will not be needed for now in the game. 
+      //the use of the spacebar will let us to in and out of the other scenes.
+      //shift, control, etc will all be used inside the other scenes.
+      //some controls and other functions can be found in the scratch paper file I made. 
+      // use this for holding information and ideas for the game.
     };
 
     this.input.keyboard.on('keydown', (event) => {
@@ -160,10 +110,6 @@ class KitchenScene extends Phaser.Scene {
     if (this.cursors.up.isDown && this.cursors.right.isDown) {
       this.player.setTexture('ZoeBackRight');
     }
-
-
-
-
 
     //Normalize player speed to stop diagonal movement from being faster than horizontal or vertical movement. 
     //This is like stopping 2d bunny hopping in fps games.
@@ -185,9 +131,23 @@ class FryerScene extends Phaser.Scene {
         console.error('ASSET FAILED:', file.key, file.src);
     });
 
-
-
+    //load images of the fryer basket and background for the fryer scene.
+    this.load.image('FryerBasket', this.spritePath + 'FryerBasket.png');
     this.load.image('FryerBackground', this.spritePath + 'FryerBackground.png');
+
+    //load images of the food that will be used in the fryer scene.
+    this.load.image('Fries', this.spritePath + 'Fries.png');
+    this.load.image('OnionRings', this.spritePath + 'OnionRings.png');
+    this.load.image('ChickenTenders', this.spritePath + 'ChickenTenders.png');
+
+    //load images of the food that will be falling down the screen in the fryer scene.
+    this.load.image('FallingFries', this.spritePath + 'FallingFries.png');
+    this.load.image('FallingOnionRings', this.spritePath + 'FallingOnionRings.png');
+    this.load.image('FallingChickenTender1', this.spritePath + 'FallingChickenTender1.png');
+    this.load.image('FallingChickenTender2', this.spritePath + 'FallingChickenTender2.png');
+    this.load.image('FallingChickenTender3', this.spritePath + 'FallingChickenTender3.png');
+    this.load.image('FallingChickenTender4', this.spritePath + 'FallingChickenTender4.png');
+
   }
 
   create() {
@@ -201,7 +161,7 @@ class FryerScene extends Phaser.Scene {
     this.bindings = {
 
       //Space to leave the station and go to the next one
-      Space: () => console.log('Space key pressed'),
+      Space: () => console.log('Exit Scene'),
 
       //Shift keys to flip burgers and pick up fries
       ShiftLeft: () => console.log('Shift left pressed'),
@@ -220,69 +180,16 @@ class FryerScene extends Phaser.Scene {
   update(time, delta) {
     // runs every frame
     
+
     //Establish constants for the update function to use for player movement
-    const player = this.player;
     const keys = this.input.keyboard.keys;
 
-    //setting velocity based off arcade physics so that the player can move around the screen with arrow keys
-    player.setVelocity(0);
-
-    //setting controls for the player to move around the screen with arrow keys
-
     // up arrow shows player backwards
-    if (this.cursors.up.isDown) {
-      player.setVelocityY(-this.playerSpeed);
+    if (ShiftLeft.isDown) {
       this.player.setTexture('ZoeBackward');
     }
 
-    // down arrow shows player forwards
-    if (this.cursors.down.isDown) {
-      player.setVelocityY(this.playerSpeed);
-      this.player.setTexture('ZoeForward');
-    }
-
-    // left and right arrows show player left and right
-    if (this.cursors.left.isDown) {
-      player.setVelocityX(-this.playerSpeed);
-      this.player.setTexture('ZoeLeft');
-    }
-    if (this.cursors.right.isDown) {
-      player.setVelocityX(this.playerSpeed);
-      this.player.setTexture('ZoeRight');
-    }
-
-    
-    //down and left for forward left
-    if (this.cursors.down.isDown && this.cursors.left.isDown) {
-      this.player.setTexture('ZoeForwardLeft');
-    }
-
-    //down right for forward right
-    if (this.cursors.down.isDown && this.cursors.right.isDown) {
-      this.player.setTexture('ZoeForwardRight');
-    }
-
-    //up and left for forward left
-    if (this.cursors.up.isDown && this.cursors.left.isDown) {
-      this.player.setTexture('ZoeBackLeft');
-    }
-
-    //up and right for forward right
-    if (this.cursors.up.isDown && this.cursors.right.isDown) {
-      this.player.setTexture('ZoeBackRight');
-    }
-
-
-
-
-
-    //Normalize player speed to stop diagonal movement from being faster than horizontal or vertical movement. 
-    //This is like stopping 2d bunny hopping in fps games.
-    player.body.velocity.normalize().scale(this.playerSpeed);
   }
-
-
-
 }
 
 

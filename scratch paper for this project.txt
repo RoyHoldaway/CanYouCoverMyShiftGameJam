@@ -64,3 +64,18 @@
     };
 
 
+New task and issues:
+
+Now kitchen scene is made 
+and so is fryer nad grill
+art and plan is almost done
+  I will need to hold data for how many burgers there
+  are on the grill 
+  as well as fryer and what is in the basket
+Im thinking a table? each scene can hold the:
+  amont of burgers and temp/time Cooked
+    how long which burgers have cooked
+  amount of baskets in the fryer and 
+  what is in them and how long until done cooking
+
+  

@@ -1,5 +1,10 @@
+const Phaser = window.Phaser;
 import KitchenScene from '/KitchenScene.js';
 import FryerScene from '/FryerScene.js';
+import GrillScene from './GrillScene.js';
+
+console.log('Game.js loaded');
+console.log('Phaser:', window.Phaser);
 
 const config = {
   type: Phaser.AUTO,
@@ -15,7 +20,7 @@ const config = {
     },
   },
 
-  scene: [KitchenScene, FryerScene]
+  scene: [KitchenScene, FryerScene, GrillScene]
 };
 
 new Phaser.Game(config);

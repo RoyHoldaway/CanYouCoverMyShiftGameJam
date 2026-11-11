@@ -117,12 +117,4 @@ class KitchenScene extends Phaser.Scene {
   }
 }
 
-class KitchenScene extends Phaser.Scene {
-    constructor() {
-        super('KitchenScene');
-    }
-
-    // preload(), create(), update()
-}
-
 export default KitchenScene;

@@ -71,12 +71,4 @@ class FryerScene extends Phaser.Scene {
   }
 }
 
-class FryerScene extends Phaser.Scene {
-    constructor() {
-        super('FryerScene');
-    }
-
-    // preload(), create(), update()
-}
-
 export default FryerScene;
